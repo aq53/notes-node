@@ -1,42 +1,35 @@
-const MongoClient = require("mongodb").MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
+const {MongoClient, ObjectID} = require('mongodb');
 
-const url = "mongodb://localhost:27017";
-const dbName = "TodoApp";
-const client = new MongoClient(url);
-
-client.connect((err) => {
+MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
   if (err) {
-    return console.log("Unable to connect to MongoDB server");
+    return console.log('Unable to connect to MongoDB server');
   }
-  console.log("Connected to MongoDB server");
-  const db = client.db(dbName);
-  db.collection("Todos").insertMany(
-    [
-        {
-      text: "Clean house",
-      completed: true
-    }
-],
-    (err, result) => {
-      if (err) {
-        return console.log("Unable to insert todo", err);
-      }
+  console.log('Connected to MongoDB server');
 
-      console.log(JSON.stringify(result.ops, undefined, 2));
-    }
-  );
-  client.close();
+  // db.collection('Todos').insertOne({
+  //   text: 'Something to do',
+  //   completed: false
+  // }, (err, result) => {
+  //   if (err) {
+  //     return console.log('Unable to insert todo', err);
+  //   }
+  //
+  //   console.log(JSON.stringify(result.ops, undefined, 2));
+  // });
+
+  // Insert new doc into Users (name, age, location)
+  // db.collection('Users').insertOne({
+  //   name: 'Andrew',
+  //   age: 25,
+  //   location: 'Philadelphia'
+  // }, (err, result) => {
+  //   if (err) {
+  //     return console.log('Unable to insert user', err);
+  //   }
+  //
+  //   console.log(result.ops[0]._id.getTimestamp());
+  // });
+
+  db.close();
 });
-
-// const insertDocuments = function(db, callback) {
-//   // Get the documents collection
-//   const collection = db.collection("documents");
-//   // Insert some documents
-//   collection.insertMany([{ a: 1 }, { a: 2 }, { a: 3 }], function(err, result) {
-//     assert.equal(err, null);
-//     assert.equal(3, result.result.n);
-//     assert.equal(3, result.ops.length);
-//     console.log("Inserted 3 documents into the collection");
-//     callback(result);
-//   });
-// };
